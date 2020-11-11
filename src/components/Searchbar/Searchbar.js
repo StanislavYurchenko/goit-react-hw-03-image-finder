@@ -14,12 +14,20 @@ class Searchbar extends Component {
     this.setState({ searchInput: '' })
   }
 
+  onSubmit = event => {
+    event.preventDefault();
+    const { searchFormSubmit } = this.props;
+    const { searchInput } = this.state;
+    searchFormSubmit(searchInput);
+    this.formReset();
+  };
+
   render() {
-    const { onSubmit } = this.props;
+
     const { searchInput } = this.state;
     return (
       <header className="Searchbar">
-        <form className="SearchForm" onSubmit={event => onSubmit(event, searchInput, this.formReset)}>
+        <form className="SearchForm" onSubmit={this.onSubmit}>
           <button type="submit" className="SearchForm-button">
             <span className="SearchForm-button-label">Search</span>
           </button>
