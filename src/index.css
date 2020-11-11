@@ -2,6 +2,7 @@ html {
   box-sizing: border-box;
   width: 100vw;
   overflow-x: hidden;
+  behavior: smooth;
 }
 
 *,
@@ -34,7 +35,6 @@ img {
   grid-template-columns: 1fr;
   grid-gap: 16px;
   padding-bottom: 24px;
-  /* padding-right: 16px; */
 }
 
 /*
@@ -213,8 +213,11 @@ img {
 /*
 * Стили компонента Loader
 */
-
 .Loader {
   margin: 0 auto;
-  /* height: 30px; */
+}
+
+.Loader svg {
+  width: 120px;
+  height: 30px;
 }

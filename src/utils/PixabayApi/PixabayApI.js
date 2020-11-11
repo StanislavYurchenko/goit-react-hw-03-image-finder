@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// Ниже ключ Никиты, с его ключем прилетают уникальные ответы, очень странно...
-const API_KEY = "3616495-8ef67a89dfdb2c2d531583fa2";
+//  ключ Никиты, с его ключем прилетают уникальные ответы, очень странно...
+// const API_KEY = "3616495-8ef67a89dfdb2c2d531583fa2";
 
-// const API_KEY = '18376090-d7378f6abd5315284a04e80ad';
+const API_KEY = '18376090-d7378f6abd5315284a04e80ad';
 const BASE_URL = 'https://pixabay.com/api';
 
 function PixabayApiRequest(userQuery = '', page = 1, per_page = 12, image_type = 'photo', orientation = 'horizontal') {
