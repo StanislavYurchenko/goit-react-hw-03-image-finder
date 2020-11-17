@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import Loader from 'react-loader-spinner';
+import './App.css'
+import CustomLoader from '../CustomLoader/CustomLoader';
 import Searchbar from '../Searchbar/Searchbar';
 import ImageGallery from '../ImageGallery/ImageGallery';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
-import PixabayApiRequest from '../../utils/PixabayApi/PixabayApI';
+import pixabayApiRequest from '../../utils/pixabayApi/pixabayApI';
 
 class App extends Component {
   state = {
@@ -50,7 +51,7 @@ class App extends Component {
 
     await this.setState({ isLoading: true });
 
-    PixabayApiRequest(userQuery, page)
+    pixabayApiRequest(userQuery, page)
       .then(({ data }) =>
         this.setState(({ images }) => {
           return { images: [...images, ...data.hits] };
@@ -98,7 +99,7 @@ class App extends Component {
           </ImageGallery>
         )}
 
-        {isLoading && <Loader type="ThreeDots" color="#00BFFF" height={100} width={100} className="Loader" />}
+        {isLoading && <CustomLoader />}
         {images.length > 0 && !isLoading && <Button onClick={this.onLoadMore} />}
 
         {isModalShow && <Modal image={image} onClick={this.toggleModal} />}
