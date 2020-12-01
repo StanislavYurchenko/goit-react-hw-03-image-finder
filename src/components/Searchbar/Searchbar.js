@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './Searchbar.css'
+import './Searchbar.module.css';
 
 class Searchbar extends Component {
   state = {
@@ -13,8 +13,8 @@ class Searchbar extends Component {
   };
 
   formReset = () => {
-    this.setState({ searchInput: '' })
-  }
+    this.setState({ searchInput: '' });
+  };
 
   onSubmit = event => {
     event.preventDefault();
@@ -25,7 +25,6 @@ class Searchbar extends Component {
   };
 
   render() {
-
     const { searchInput } = this.state;
     return (
       <header className="Searchbar">
@@ -51,7 +50,7 @@ class Searchbar extends Component {
 }
 
 Searchbar.propTypes = {
-  searchFormSubmit: PropTypes.func.isRequired
-}
+  searchFormSubmit: PropTypes.func.isRequired,
+};
 
 export default Searchbar;

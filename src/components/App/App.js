@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import './App.css'
+import styles from './App.module.css';
 import CustomLoader from '../CustomLoader/CustomLoader';
 import Searchbar from '../Searchbar/Searchbar';
 import ImageGallery from '../ImageGallery/ImageGallery';
-import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 import pixabayApiRequest from '../../utils/pixabayApi/pixabayApI';
@@ -27,12 +26,14 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { userQuery, page, images, isModalShow } = this.state;
 
-    if (prevState.userQuery !== userQuery || page !== prevState.page) this.request();
+    if (prevState.userQuery !== userQuery || page !== prevState.page)
+      this.request();
 
     if (images.length !== prevState.images.length) this.scrollToButton();
 
     isModalShow && window.addEventListener('keydown', this.closeModal);
-    prevState.isModalShow && window.removeEventListener('keydown', this.closeModal);
+    prevState.isModalShow &&
+      window.removeEventListener('keydown', this.closeModal);
   }
 
   searchFormSubmit = searchInput => {
@@ -81,26 +82,25 @@ class App extends Component {
   };
 
   closeModal = event => {
-    if (event.code === 'Escape') this.setState({ isModalShow: false, image: {} });
+    if (event.code === 'Escape')
+      this.setState({ isModalShow: false, image: {} });
   };
 
   render() {
     const { images, isLoading, isModalShow, image } = this.state;
 
     return (
-      <div className="App">
+      <div className={styles.App}>
         <Searchbar searchFormSubmit={this.searchFormSubmit} />
 
         {images.length > 0 && (
-          <ImageGallery>
-            {images.map(({ id, webformatURL, tags }) =>
-              <ImageGalleryItem id={id} src={webformatURL} alt={tags} onClick={this.toggleModal} />
-            )}
-          </ImageGallery>
+          <ImageGallery images={images} toggleModal={this.toggleModal} />
         )}
 
         {isLoading && <CustomLoader />}
-        {images.length > 0 && !isLoading && <Button onClick={this.onLoadMore} />}
+        {images.length > 0 && !isLoading && (
+          <Button onClick={this.onLoadMore} />
+        )}
 
         {isModalShow && <Modal image={image} onClick={this.toggleModal} />}
       </div>
