@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import styles from './App.module.css';
 import CustomLoader from '../CustomLoader/CustomLoader';
 import Searchbar from '../Searchbar/Searchbar';
@@ -14,8 +15,7 @@ class App extends Component {
     page: 1,
     isLoading: false,
     isModalShow: false,
-    image: {},
-    fetchError: null,
+    image: null,
   };
 
   componentDidMount() {
@@ -24,16 +24,15 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { userQuery, page, images, isModalShow } = this.state;
+    const { userQuery, page, images, image } = this.state;
 
     if (prevState.userQuery !== userQuery || page !== prevState.page)
       this.request();
 
     if (images.length !== prevState.images.length) this.scrollToButton();
 
-    isModalShow && window.addEventListener('keydown', this.closeModal);
-    prevState.isModalShow &&
-      window.removeEventListener('keydown', this.closeModal);
+    image && window.addEventListener('keydown', this.closeModal);
+    prevState.image && window.removeEventListener('keydown', this.closeModal);
   }
 
   searchFormSubmit = searchInput => {
@@ -47,10 +46,10 @@ class App extends Component {
     });
   };
 
-  request = async () => {
+  request = () => {
     const { userQuery, page } = this.state;
 
-    await this.setState({ isLoading: true });
+    this.setState({ isLoading: true });
 
     pixabayApiRequest(userQuery, page)
       .then(({ data }) =>
@@ -58,8 +57,7 @@ class App extends Component {
           return { images: [...images, ...data.hits] };
         }),
       )
-      .then(this.setState({ fetchError: null }))
-      .catch(error => this.setState({ fetchError: error.messages }))
+      .catch(error => toast(error.massage))
       .finally(this.setState({ isLoading: false }));
   };
 
@@ -75,34 +73,30 @@ class App extends Component {
 
     const image = images.find(image => Number.parseInt(id) === image.id);
 
-    this.setState(({ isModalShow }) => {
-      if (name === 'image') return { isModalShow: true, image: image };
-      if (name === 'overlay') return { isModalShow: false, image: {} };
-    });
+    if (name === 'image') this.setState({ image: image });
+    if (name === 'overlay') this.setState({ image: null });
   };
 
   closeModal = event => {
-    if (event.code === 'Escape')
-      this.setState({ isModalShow: false, image: {} });
+    if (event.code === 'Escape') this.setState({ image: null });
   };
 
   render() {
-    const { images, isLoading, isModalShow, image } = this.state;
+    const { images, isLoading, image } = this.state;
 
     return (
       <div className={styles.App}>
         <Searchbar searchFormSubmit={this.searchFormSubmit} />
-
         {images.length > 0 && (
           <ImageGallery images={images} toggleModal={this.toggleModal} />
         )}
-
         {isLoading && <CustomLoader />}
         {images.length > 0 && !isLoading && (
           <Button onClick={this.onLoadMore} />
         )}
-
-        {isModalShow && <Modal image={image} onClick={this.toggleModal} />}
+        {images.length === 0 && !isLoading && <div>Nothing found</div>}
+        {image && <Modal image={image} onClick={this.toggleModal} />}
+        <ToastContainer autoClose={3000} />
       </div>
     );
   }

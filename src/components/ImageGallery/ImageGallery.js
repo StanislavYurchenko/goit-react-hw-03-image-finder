@@ -3,7 +3,6 @@ import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 import styles from './ImageGallery.module.css';
 
 function ImageGallery({ images, toggleModal }) {
-  console.log('images', images);
   return (
     <ul className={styles.ImageGallery}>
       {images.map(({ id, webformatURL, tags }) => (
