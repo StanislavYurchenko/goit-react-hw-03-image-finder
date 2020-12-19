@@ -52,12 +52,11 @@ class App extends Component {
     this.setState({ isLoading: true });
 
     pixabayApiRequest(userQuery, page)
-      .then(({ data }) =>
+      .then(newImages =>
         this.setState(({ images }) => {
-          return { images: [...images, ...data.hits] };
+          return { images: [...images, ...newImages] };
         }),
       )
-      .catch(error => toast(error.massage))
       .finally(this.setState({ isLoading: false }));
   };
 
