@@ -1,104 +1,53 @@
-import React, { useState, Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Searchbar.module.css';
 
-// function Searchbar({ searchFormSubmit }) {
-//   const [searchInput, setSearchInput] = useState('');
+function Searchbar({ searchFormSubmit }) {
+  const [searchInput, setSearchInput] = useState('');
 
-//   const onChange = event => {
-//     const { value } = event.target;
-//     setSearchInput(value);
-//   };
-
-//   const formReset = () => {
-//     setSearchInput('');
-//   };
-
-//   const onSubmit = event => {
-//     event.preventDefault();
-
-//     const normalizedSearchInput = searchInput.trim();
-//     if (normalizedSearchInput === '') {
-//       toast.error('Enter query');
-//       return;
-//     }
-//     searchFormSubmit(normalizedSearchInput);
-//     formReset();
-//   };
-
-//   return (
-//     <header className="Searchbar">
-//       <form className="SearchForm" onSubmit={onSubmit}>
-//         <button type="submit" className="SearchForm-button">
-//           <span className="SearchForm-button-label">Search</span>
-//         </button>
-
-//         <input
-//           name="searchInput"
-//           value={searchInput}
-//           onChange={onChange}
-//           className="SearchForm-input"
-//           type="text"
-//           autoComplete="off"
-//           autoFocus
-//           placeholder="Search images and photos"
-//         />
-//       </form>
-//     </header>
-//   );
-// }
-
-class Searchbar extends Component {
-  state = {
-    searchInput: '',
+  const onChange = event => {
+    const { value } = event.target;
+    setSearchInput(value);
   };
 
-  onChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+  const formReset = () => {
+    setSearchInput('');
   };
 
-  formReset = () => {
-    this.setState({ searchInput: '' });
-  };
-
-  onSubmit = event => {
+  const onSubmit = event => {
     event.preventDefault();
-    const { searchFormSubmit } = this.props;
-    const searchInput = this.state.searchInput.trim();
-    if (searchInput === '') {
+
+    const normalizedSearchInput = searchInput.trim();
+    if (normalizedSearchInput === '') {
       toast.error('Enter query');
       return;
     }
-    searchFormSubmit(searchInput);
-    this.formReset();
+    searchFormSubmit(normalizedSearchInput);
+    formReset();
   };
 
-  render() {
-    const { searchInput } = this.state;
-    return (
-      <header className="Searchbar">
-        <form className="SearchForm" onSubmit={this.onSubmit}>
-          <button type="submit" className="SearchForm-button">
-            <span className="SearchForm-button-label">Search</span>
-          </button>
+  return (
+    <header className="Searchbar">
+      <form className="SearchForm" onSubmit={onSubmit}>
+        <button type="submit" className="SearchForm-button">
+          <span className="SearchForm-button-label">Search</span>
+        </button>
 
-          <input
-            name="searchInput"
-            value={searchInput}
-            onChange={this.onChange}
-            className="SearchForm-input"
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-          />
-        </form>
-      </header>
-    );
-  }
+        <input
+          name="searchInput"
+          value={searchInput}
+          onChange={onChange}
+          className="SearchForm-input"
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+        />
+      </form>
+    </header>
+  );
 }
 
 Searchbar.propTypes = {
